@@ -1,8 +1,10 @@
 import collectd
-from datadog import statsd
+from datadog import statsd, initialize
 
 DOGSTATSD_PLUGIN_INSTANCE = "dogstatsd_pluginInstance"
 DOGSTATSD_TYPE_INSTANCE = "dogstatsd_typeInstance"
+
+initialize(statsd_host="localhost", statsd_port=8125)
 
 
 def write_callback(vl):
