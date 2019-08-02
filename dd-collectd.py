@@ -49,8 +49,14 @@ class CollectdSubmitter(object):
         if "type_instance" in plugin_data and vl.type_instance:
             tags.append("{}:{}".format(plugin_data['type_instance'], vl.plugin_instance))
 
-        metric_type = collectd.get_dataset(vl.type)[1]
+        log("Getting dataset")
+        dataset = collectd.get_dataset(vl.type)
+        log("Dataset is {}".format(dataset))
+        if not dataset:
+            return
+        metric_type = dataset[1]
         log("Tags are {}".format(str(tags)))
+        log("Metric type is {}".format(metric_type))
         if 'values_to_suffix' in plugin_data:
             suffixes = plugin_data['values_to_suffix']
             for idx, value in enumerate(vl.values):
