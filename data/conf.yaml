@@ -17,4 +17,4 @@ plugins:
       - "device:1"
       - "device:2"
 aliases:
-  - "load.load": "system.load"
+  load.load: "system.load"

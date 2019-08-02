@@ -74,7 +74,7 @@ class CollectdSubmitter(object):
         metric_type = collectd.get_dataset(vl.type)[1]
 
     def submit_metric(self, metric_name, metric_value, metric_type, tags):
-        metric_name = "collectd." + self.aliases(metric_name, metric_name)
+        metric_name = "collectd." + self.aliases.get(metric_name, metric_name)
         log("Submitting metric {}:{}:{}:{}".format(metric_name, metric_value, metric_type, tags))
         if metric_type == collectd.DS_TYPE_COUNTER:
             statsd.increment(metric_name, metric_value, tags)
