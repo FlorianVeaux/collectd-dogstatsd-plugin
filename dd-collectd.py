@@ -71,8 +71,6 @@ class CollectdSubmitter(object):
                 sum += v
             self.submit_metric(metric, float(sum)/len(vl.values), metric_type, tags)
 
-        metric_type = collectd.get_dataset(vl.type)[1]
-
     def submit_metric(self, metric_name, metric_value, metric_type, tags):
         metric_name = "collectd." + self.aliases.get(metric_name, metric_name)
         log("Submitting metric {}:{}:{}:{}".format(metric_name, metric_value, metric_type, tags))
