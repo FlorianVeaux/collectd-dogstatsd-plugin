@@ -35,7 +35,7 @@ class CollectdSubmitter(object):
             log("Init done")
 
     def write_callback(self, vl):
-        metric = "collectd." + vl.plugin + "." + vl.type
+        metric = vl.plugin + "." + vl.type
         plugin_data = self.plugins.get(vl.plugin)
         if not plugin_data:
             return
