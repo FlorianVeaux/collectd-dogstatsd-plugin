@@ -4,17 +4,17 @@
 namespace: collectd
 
 plugins:
-  - cpu:
-      plugin_instance: cpu_core
-      type_instance: cpu_class
-  - load:
-      values_to_suffix:
-        - 1m
-        - 5m
-        - 15m
-  - disk:
-      values_to_tags:
-        - "device:1"
-        - "device:2"
+  cpu:
+    plugin_instance: cpu_core
+    type_instance: cpu_class
+  load:
+    values_to_suffix:
+      - 1m
+      - 5m
+      - 15m
+  disk:
+    values_to_tags:
+      - "device:1"
+      - "device:2"
 aliases:
   - "load.load": "system.load"
