@@ -36,6 +36,7 @@ class CollectdSubmitter(object):
 
     def write_callback(self, vl):
         metric = vl.plugin + "." + vl.type
+        metric = "collectd." + self.aliases.get(metric, metric)
         plugin_data = self.plugins.get(vl.plugin)
         if not plugin_data:
             return
@@ -77,7 +78,6 @@ class CollectdSubmitter(object):
             self.submit_metric(metric, float(sum)/len(vl.values), dataset[0][1], tags)
 
     def submit_metric(self, metric_name, metric_value, metric_type, tags):
-        metric_name = "collectd." + self.aliases.get(metric_name, metric_name)
         log("Submitting metric {}:{}:{}:{}".format(metric_name, metric_value, metric_type, tags))
         if metric_type == collectd.DS_TYPE_COUNTER:
             statsd.increment(metric_name, metric_value, tags)
