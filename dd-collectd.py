@@ -12,7 +12,6 @@ class CollectdSubmitter(object):
     def __init__(self):
         self.is_initialized = False
         self.namespace = None
-        self.plugins_data = None
         self.plugins = None
         self.aliases = None
 
@@ -30,15 +29,14 @@ class CollectdSubmitter(object):
         with open(config_file, 'r') as f:
             config = yaml.load(f)
             self.namespace = config['namespace']
-            self.plugins_data = config['plugins']
-            self.plugins = [p['name'] for p in self.plugins_data]
+            self.plugins = config['plugins']
             self.aliases = config.get('aliases', [])
             self.is_initialized = True
             log("Init done")
 
     def write_callback(self, vl):
         metric = "collectd." + vl.plugin + "." + vl.type
-        plugin_data = self.plugins_data.get(vl.plugin)
+        plugin_data = self.plugins.get(vl.plugin)
         if not plugin_data:
             return
 
