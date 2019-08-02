@@ -3,18 +3,33 @@
 #
 namespace: collectd
 
+## @param plugins - object - required
+## Ref: https://collectd.org/documentation/manpages/collectd-python.5.shtml
+## To collect metrics for a given plugin, add its configuration below
+## Each element of `plugins` can contain those fields:
+##  - plugin_instance: the plugin_instance of each metric will be used as a tag with the key you defined.
+##  - type_instance: the type_instance of each metric will be used as a tag with the key you defined.
+##  - values_to_tags: when a collectd `value` has multiple values. Each one is submitted with the tags you defined.
+##  - values_to_suffix: same but a suffix is appended to the metric name instead of a tag.
+##  - aliases: map from string to string, used to give a better name to metrics. The key is the metric `type`
+#
 plugins:
   cpu:
     plugin_instance: cpu_core
     type_instance: cpu_class
+    aliases:
+      cpu: system.cpu
+  df:
+    plugin_instance: partition
+    type_instance: type
   load:
-    values_to_suffix:
-      - 1m
-      - 5m
-      - 15m
+    aliases:
+      load: system.load
   disk:
-    values_to_tags:
-      - "device:1"
-      - "device:2"
-aliases:
-  load.load: "system.load"
+    plugin_instance: disk_name
+  interface:
+    plugin_instance: interface_name
+    values_names_as_tag: direction
+
+  interface
+
