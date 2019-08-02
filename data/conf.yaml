@@ -30,6 +30,3 @@ plugins:
   interface:
     plugin_instance: interface_name
     values_names_as_tag: direction
-
-  interface
-
