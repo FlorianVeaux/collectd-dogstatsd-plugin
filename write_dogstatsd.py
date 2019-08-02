@@ -94,13 +94,9 @@ class DogstatsdSubmitter(object):
     def submit_metric(self, metric_name, metric_value, metric_type, tags):
         metric_name = "{}.{}".format(self.namespace, metric_name)
         self.log_verbose("Submitting metric {}".format(metric_name))
-        if metric_type == collectd.DS_TYPE_COUNTER:
+        if metric_type in (collectd.DS_TYPE_COUNTER, collectd.DS_TYPE_DERIVE):
             statsd.increment(metric_name, metric_value, tags)
-        elif metric_type == collectd.DS_TYPE_GAUGE:
-            statsd.gauge(metric_name, metric_value, tags)
-        elif metric_type == collectd.DS_TYPE_DERIVE:
-            statsd.gauge(metric_name, metric_value, tags)
-        elif metric_type == collectd.DS_TYPE_ABSOLUTE:
+        elif metric_type in (collectd.DS_TYPE_GAUGE, collectd.DS_TYPE_ABSOLUTE):
             statsd.gauge(metric_name, metric_value, tags)
         else:
             collectd.error("Unknown metric type %s" % metric_type)
