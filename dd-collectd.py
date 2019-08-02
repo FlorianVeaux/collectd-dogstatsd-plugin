@@ -54,28 +54,27 @@ class CollectdSubmitter(object):
         log("Dataset is {}".format(dataset))
         if not dataset:
             return
-        metric_type = dataset[1]
         log("Tags are {}".format(str(tags)))
-        log("Metric type is {}".format(metric_type))
         if 'values_to_suffix' in plugin_data:
             suffixes = plugin_data['values_to_suffix']
             for idx, value in enumerate(vl.values):
-                if idx == len(suffixes):
+                if idx == len(suffixes) or idx == len(dataset):
                     break
                 metric_name = metric + "." + suffixes[idx]
+                metric_type = dataset[idx][1]
                 self.submit_metric(metric_name, value, metric_type, tags)
         elif 'values_to_tags' in plugin_data:
             additional_tags = plugin_data['values_to_tags']
             for idx, value in enumerate(vl.values):
-                if idx == len(additional_tags):
+                if idx == len(additional_tags) or idx == len(dataset):
                     break
+                metric_type = dataset[idx][1]
                 self.submit_metric(metric, value, metric_type, tags + [additional_tags[idx]])
-
         elif vl.values:
             sum = 0
             for v in vl.values:
                 sum += v
-            self.submit_metric(metric, float(sum)/len(vl.values), metric_type, tags)
+            self.submit_metric(metric, float(sum)/len(vl.values), dataset[0][1], tags)
 
     def submit_metric(self, metric_name, metric_value, metric_type, tags):
         metric_name = "collectd." + self.aliases.get(metric_name, metric_name)
